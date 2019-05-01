@@ -13,7 +13,7 @@ namespace Alulema.Function
     public static class PostUsers
     {
         [FunctionName("PostUsers")]
-        public static async Task<HttpResponseMessage> Run(
+        public static HttpResponseMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequestMessage req,
             ILogger log)
         {
