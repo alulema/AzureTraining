@@ -13,12 +13,12 @@ namespace Alulema.Function
 {
     public static class PostTransactions
     {
-        private static string key = TelemetryConfiguration.Active.InstrumentationKey =
+        private static readonly string Key = TelemetryConfiguration.Active.InstrumentationKey =
             Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY", EnvironmentVariableTarget.Process);
 
-        private static TelemetryClient telemetry = new TelemetryClient
+        private static readonly TelemetryClient Telemetry = new TelemetryClient
         {
-            InstrumentationKey = key
+            InstrumentationKey = Key
         };
 
         [FunctionName("PostTransactions")]
@@ -44,12 +44,12 @@ namespace Alulema.Function
             catch (Exception e)
             {
                 log.LogError($"Invalid payload received, input received was: {message}");
-                telemetry.TrackEvent("Bad request received");
-                telemetry.TrackException(e);
+                Telemetry.TrackEvent("Bad request received");
+                Telemetry.TrackException(e);
                 transaction = null;
                 return req.CreateErrorResponse(HttpStatusCode.BadRequest, "The request did not match the required schema");
             }
-
+    
             return req.CreateResponse(HttpStatusCode.OK, $"You made a transaction of {transaction.Amount}");
         }
     }
